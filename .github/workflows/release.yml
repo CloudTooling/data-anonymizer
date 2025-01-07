@@ -1,0 +1,95 @@
+name: Create release # You may choose a different name
+run-name: ${{ inputs.releaseversion }} # Enumerates entries in the "workflow runs" view
+on:
+    workflow_dispatch:
+        inputs:
+            releaseversion:
+                description: 'Release version'
+                required: true
+                type: string
+                default: "X.Y.Z"
+
+jobs:
+    release: # Arbitrarily chosen
+        name: Release
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            packages: write
+            attestations: write
+            id-token: write
+        steps:
+
+            -   uses: actions/create-github-app-token@v1
+                id: app-token
+                with:
+                    app-id: ${{ vars.CI_APP_ID }}
+                    private-key: ${{ secrets.CI_PRIVATE_KEY }}
+
+            -   name: Checkout
+                uses: actions/checkout@v4
+                with:
+                    fetch-depth: 0
+                    token: ${{ steps.app-token.outputs.token }}
+                    ref: ${{ github.head_ref }}
+
+            -   name: Get GitHub App User ID
+                id: get-user-id
+                run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+                env:
+                    GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+            -   name: Configure Git author
+                run: |
+                    git config --global user.name '${{ steps.app-token.outputs.app-slug }}[bot]'
+                    git config --global user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com>'
+
+
+            -   name: Set version
+                run: |
+                    echo "{\"version\":\"${{ inputs.releaseversion }}\"}" > config.json
+
+            -   name: Build image
+                id: build-image
+                uses: redhat-actions/buildah-build@v2
+                with:
+                    image: cloudtooling/data-anonymizer
+                    tags: 'latest next ${{env.APP_VERSION}} ${{env.APP_VERSION}}_rc'
+                    containerfiles: |
+                        ./Dockerfile
+                    build-args: |
+                        BUILD_DATE=${{env.BUILD_DATE}}
+                        APP_VERSION=${{env.APP_VERSION}}
+
+            -   name: Push To Docker Hub
+                id: push-to-dockerhub-tagged
+                uses: redhat-actions/push-to-registry@v2
+                with:
+                    image: ${{ steps.build-image.outputs.image }}
+                    tags: 'latest ${{ inputs.releaseversion }}'
+                    registry: registry.hub.docker.com
+                    username: ${{ secrets.DOCKER_HUB_USER}}
+                    password: ${{ secrets.DOCKER_HUB_TOKEN }}
+                if: github.ref_type == 'tag' || github.tag != ''
+
+            -   name: Adding release notes
+                uses: TriPSs/conventional-changelog-action@v6
+                with:
+                    input-file: CHANGELOG.md
+                    github-token: ${{ steps.app-token.outputs.token }}
+                    version-file: config.json
+                    pre-release: true
+                    skip-bump: true
+                    skip-tag: true
+                    skip-on-empty: true
+                    tag-prefix: "v"
+
+            -   name: Create Release on GH
+                id: tag-and-release
+                uses: avakar/tag-and-release@v1
+                with:
+                    draft: true
+                    release_name: ${{ github.event.inputs.releaseversion }}
+                    tag_name: v${{ github.event.inputs.releaseversion }}
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
