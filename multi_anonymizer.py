@@ -451,6 +451,8 @@ def create_faker_dict(selector: Selector) -> {}:
         fake_dict = defaultdict(FAKER.last_name)
     if data_type == 'number':
         fake_dict = defaultdict(getRandomInt(selector.min, selector.max))
+    if data_type == 'url':
+        fake_dict = defaultdict(FAKER.url)
     if data_type == 'email':
         fake_dict = defaultdict(FAKER.email)
     if data_type == 'phone_number':
@@ -461,6 +463,8 @@ def create_faker_dict(selector: Selector) -> {}:
         fake_dict = defaultdict(FAKER.postcode)
     if data_type == 'city':
         fake_dict = defaultdict(FAKER.city)
+    if data_type == 'city_suffix':
+        fake_dict = defaultdict(FAKER.city_suffix)
     if data_type == 'street':
         fake_dict = defaultdict(FAKER.street_address)
     if data_type == 'street_name':
@@ -479,6 +483,8 @@ def create_faker_dict(selector: Selector) -> {}:
         fake_dict = defaultdict(FAKER.date)
     if data_type == 'uuid4':
         fake_dict = defaultdict(FAKER.uuid4)
+    if data_type == 'passport_number':
+        fake_dict = defaultdict(FAKER.passport_number)
     if data_type == 'company':
         fake_dict = defaultdict(FAKER.company)
     if data_type == 'dummy':
