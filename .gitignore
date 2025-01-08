@@ -1,0 +1,16 @@
+# OS stuff
+*.icloud
+._*
+.DS_Store
+Thumbs.db
+Desktop.ini
+.Spotlight-V100
+.Trashes
+
+# IDE stuff
+.idea/*
+*.iml
+*.ipr
+
+# Build
+cloudtooling-data-anonymizer-latest_digest.txt
