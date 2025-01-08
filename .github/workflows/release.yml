@@ -54,7 +54,7 @@ jobs:
                 uses: redhat-actions/buildah-build@v2
                 with:
                     image: cloudtooling/data-anonymizer
-                    tags: 'latest next ${{env.APP_VERSION}} ${{env.APP_VERSION}}_rc'
+                    tags: 'latest ${{ inputs.releaseversion }}'
                     containerfiles: |
                         ./Dockerfile
                     build-args: |
