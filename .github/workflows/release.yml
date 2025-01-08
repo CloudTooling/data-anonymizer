@@ -70,7 +70,6 @@ jobs:
                     registry: registry.hub.docker.com
                     username: ${{ secrets.DOCKER_HUB_USER}}
                     password: ${{ secrets.DOCKER_HUB_TOKEN }}
-                if: github.ref_type == 'tag' || github.tag != ''
 
             -   name: Adding release notes
                 uses: TriPSs/conventional-changelog-action@v6
@@ -83,6 +82,10 @@ jobs:
                     skip-tag: true
                     skip-on-empty: true
                     tag-prefix: "v"
+
+            -   name: Git tag
+                run: |
+                    git tag v${{ inputs.releaseversion }} && git push --tags
 
             -   name: Create Release on GH
                 id: tag-and-release
