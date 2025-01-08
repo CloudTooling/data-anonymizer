@@ -47,7 +47,7 @@ jobs:
 
             -   name: Set version
                 run: |
-                    echo "{\"version\":\"${{ inputs.releaseversion }}\"}" > config.json
+                    echo "{\"version\":\"${{ inputs.releaseversion }}\"}" | jq  > config.json
 
             -   name: Build image
                 id: build-image

@@ -41,7 +41,7 @@ jobs:
               run: |
                   BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
                   BRANCH=${GITHUB_REF_NAME#v}
-                  APP_VERSION=$(cat config.json | grep version| head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
+                  APP_VERSION=$(cat config.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
                   echo Version: $APP_VERSION
                   echo "VERSION=$APP_VERSION" >> $GITHUB_ENV
                   echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
@@ -52,7 +52,7 @@ jobs:
               uses: redhat-actions/buildah-build@v2
               with:
                   image: cloudtooling/data-anonymizer
-                  tags: 'latest next ${{env.APP_VERSION}} ${{env.APP_VERSION}}_rc'
+                  tags: 'next ${{env.APP_VERSION}}_rc'
                   containerfiles: |
                       ./Dockerfile
                   build-args: |
