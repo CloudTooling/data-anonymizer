@@ -55,6 +55,10 @@ jobs:
           build-args: |
             BUILD_DATE=${{env.BUILD_DATE}}
             APP_VERSION=${{env.APP_VERSION}}
+      - name: Run tests in container
+        id: run-tests
+        run: |
+          docker run -v $(pwd):/build --entrypoint "/build/.bin/tests.sh"  cloudtooling/data-anonymizer:next
       - name: Push To Docker Hub
         id: push-to-dockerhub-preview
         uses: redhat-actions/push-to-registry@v2
