@@ -1,3 +1,17 @@
+## [0.1.1](https://github.com/CloudTooling/data-anonymizer/compare/v0.1.0...v0.1.1) (2025-01-15)
+
+
+### Bug Fixes
+
+* **CLI:** Adding jsonpath support ([e8400d8](https://github.com/CloudTooling/data-anonymizer/commit/e8400d8ff11ee32be3d6d89950983373bc2058d4))
+
+
+### Features
+
+* **Faker:** Adding address support ([5ccc499](https://github.com/CloudTooling/data-anonymizer/commit/5ccc499c27f417668b787e465a8b8eca2b1300b3))
+
+
+
 # 0.1.0 (2025-01-08)
 
 
