@@ -457,6 +457,8 @@ def create_faker_dict(selector: Selector) -> {}:
         fake_dict = defaultdict(FAKER.email)
     if data_type == 'phone_number':
         fake_dict = defaultdict(FAKER.phone_number)
+    if data_type == 'address':
+        fake_dict = defaultdict(FAKER.address)
     if data_type == 'zip':
         fake_dict = defaultdict(FAKER.postcode)
     if data_type == 'postcode':
