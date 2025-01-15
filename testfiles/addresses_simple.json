@@ -8,7 +8,8 @@
                     {
                         "id": "123",
                         "street": "Martinshügel 123",
-                        "zipcity": "4020 Linz",
+                        "zip": "4020",
+                        "city": "Linz",
                         "country": {
                             "code": "AT",
                             "name": "Austria"
@@ -17,7 +18,8 @@
                     {
                         "id": "124",
                         "street": "Wherever 19",
-                        "zipcity": "12345 München",
+                        "zip": "12345",
+                        "city": "München",
                         "country": {
                             "code": "DE",
                             "name": "Deutschland"
@@ -32,7 +34,8 @@
                     {
                         "id": "125",
                         "street": "Wienerstrasse 80",
-                        "zipcity": "12345 München",
+                        "zip": "12345",
+                        "city": "München",
                         "country": {
                             "code": "DE",
                             "name": "Deutschland"
@@ -41,7 +44,8 @@
                     {
                         "id": "126",
                         "street": "Radetzkystrasse 5",
-                        "zipcity": "4840 Vöcklabruck",
+                        "zip": "4840",
+                        "city": "Vöcklabruck",
                         "country": {
                             "code": "AT",
                             "name": "Austria"

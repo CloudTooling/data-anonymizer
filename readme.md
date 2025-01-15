@@ -29,4 +29,6 @@ docker run -v $(pwd):/input cloudtooling/data-anonymizer -t xml -i \
   "$inputFile:(type=phone_number,xpath=//FaxNr)"
 ```
 
+Check also `.bin/tests.sh` for some sample usages.
+
 See [here](https://github.com/CloudTooling/data-anonymizer/blob/develop/multi_anonymizer.py#L442) for supported [faker](https://faker.readthedocs.io/en/stable/providers.html) types.
