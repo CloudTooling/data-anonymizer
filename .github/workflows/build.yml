@@ -68,15 +68,18 @@ jobs:
         run: |
           docker run -v $(pwd):/build --entrypoint "/build/.bin/tests.sh" cloudtooling/data-anonymizer:${{github.run_id }}
 
-      - name: Push To Docker Hub
-        id: push-to-dockerhub-preview
-        uses: redhat-actions/push-to-registry@v2
+      - name: Log in to GitHub container registry
+        uses: docker/login-action@v3
         with:
-          image: ${{ steps.build-image.outputs.image }}
-          tags: 'next ${{env.APP_VERSION}}_rc'
-          registry: registry.hub.docker.com
           username: ${{ vars.DOCKER_HUB_USER}}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
+        if: github.ref == 'refs/heads/develop'
+
+      - name: Deploy Container Image
+        id: push-to-dockerhub-release
+        run: |
+          docker push cloudtooling/data-anonymizer:next
+          docker push cloudtooling/data-anonymizer:${{env.APP_VERSION}}_rc
         if: github.ref == 'refs/heads/develop'
 
   Build-results:
