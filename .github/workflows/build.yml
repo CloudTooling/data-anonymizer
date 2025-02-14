@@ -17,48 +17,57 @@ jobs:
         python: ['3.9', '3.10', '3.11']
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
+
       - name: Install dependencies
         id: install-deps
         run: |
           pip3 install -r requirements.txt
+
       - name: Run tests
         id: run-tests
         run: |
           .bin/tests.sh
+
   Container:
     name: Build Container Image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Write version vars
         id: version-vars
         run: |
           BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
           BRANCH=${GITHUB_REF_NAME#v}
-          APP_VERSION=$(cat config.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
+          APP_VERSION=$(cat config.json | jq -r ".version")
           echo Version: $APP_VERSION
           echo "VERSION=$APP_VERSION" >> $GITHUB_ENV
           echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
           echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
-      - name: Build image
+
+      - name: Build Container Image
         id: build-image
-        uses: redhat-actions/buildah-build@v2
+        uses: docker/build-push-action@v6
         with:
-          image: cloudtooling/data-anonymizer
-          tags: 'next ${{env.APP_VERSION}}_rc'
-          containerfiles: |
-            ./Dockerfile
+          push: false
+          tags: |
+            cloudtooling/data-anonymizer:next
+            cloudtooling/data-anonymizer:${{github.run_id }}
+            cloudtooling/data-anonymizer:${{env.APP_VERSION}}_rc
           build-args: |
             BUILD_DATE=${{env.BUILD_DATE}}
             APP_VERSION=${{env.APP_VERSION}}
+
       - name: Run tests in container
         id: run-tests
         run: |
-          docker run -v $(pwd):/build --entrypoint "/build/.bin/tests.sh"  cloudtooling/data-anonymizer:next
+          docker run -v $(pwd):/build --entrypoint "/build/.bin/tests.sh" cloudtooling/data-anonymizer:${{github.run_id }}
+
       - name: Push To Docker Hub
         id: push-to-dockerhub-preview
         uses: redhat-actions/push-to-registry@v2
@@ -66,9 +75,10 @@ jobs:
           image: ${{ steps.build-image.outputs.image }}
           tags: 'next ${{env.APP_VERSION}}_rc'
           registry: registry.hub.docker.com
-          username: ${{ secrets.DOCKER_HUB_USER}}
+          username: ${{ vars.DOCKER_HUB_USER}}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
         if: github.ref == 'refs/heads/develop'
+
   Build-results:
     name: Build results
     if: ${{ always() }}
