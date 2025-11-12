@@ -1,4 +1,4 @@
-certifi==2025.10.5
+certifi==2025.11.12
 charset-normalizer==3.4.4
 docopt==0.6.2
 Faker==37.12.0
