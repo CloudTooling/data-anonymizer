@@ -15,6 +15,6 @@ Desktop.ini
 # Build
 cloudtooling-data-anonymizer-latest_digest.txt
 # Test results
-testfiles/*.csv_anonymized
-testfiles/*.json_anonymized
-testfiles/*.xml_anonymized
+test/e2e/testfiles/*.csv_anonymized
+test/e2e/testfiles/*.json_anonymized
+test/e2e/testfiles/*.xml_anonymized
