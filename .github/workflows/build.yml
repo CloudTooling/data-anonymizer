@@ -28,10 +28,10 @@ jobs:
         run: |
           pip3 install -r requirements.txt
 
-      - name: Run tests
-        id: run-tests
+      - name: Run End2End tests
+        id: run-end2end-tests
         run: |
-          .bin/tests.sh
+          test/.bin/e2e-tests.sh
 
   Container:
     name: Build Container Image
