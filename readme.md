@@ -29,6 +29,22 @@ docker run -v $(pwd):/input cloudtooling/data-anonymizer -t xml -i \
   "$inputFile:(type=phone_number,xpath=//FaxNr)"
 ```
 
+## CLI Arguments
+
+| **Short** | **Long** | **Destination** | **Default** | **Action** | **Description** |
+|------------|-----------|----------------|--------------|-------------|------------------|
+| `-i` | `--input` | `input` | — | `extend` | One or more input sources.<br><br>**Examples:**<br>• CSV: `inputfile1:(type=number,column=0)`<br>• XML: `inputfile1:(type=last_name,xpath=./person/lastname)`<br>• SQLite: `sqlite://[username:password@]server/database:(input_type=db,type=first_name,table=people,column=first_name)`<br><br>Use multiple arguments to anonymize across multiple files.<br>Supports mixing types (`csv`, `xml`, `json`, …) and wildcards (`*`, `?`). |
+| `-t` | `--type` | `type` | `number` | — | Type of data to anonymize (e.g., `name`, `first_name`, `last_name`, `email`, `zip`, `city`, `address`, `number`, …). |
+| `-e` | `--encoding` | `encoding` | `ISO-8859-15` | — | File encoding for reading/writing.<br>Example: `UTF-8`. |
+| `-d` | `--delimiter` | `delimiter` | `;` | — | CSV column delimiter.<br>Use `--delimiter $'\t'` for tab-separated files. |
+| `-l` | `--locale` | `locale` | `de_DE` | — | Locale for generating fake data (e.g., `en_US`, `fr_FR`). |
+| `-o` | `--overwrite` | `overwrite` | `False` | `store_true` | Overwrite original file(s) with anonymized data. |
+| `-j` | `--ignore-missing-file` | `ignoreMissingFile` | `False` | `store_true` | Ignore missing files instead of failing. |
+| — | `--header-lines` | `headerLines` | `0` | — | Number of header lines in CSV files to skip. |
+| — | `--namespace` | `namespace` | — | — | Define XML namespaces.<br>**Syntax:** `shortname=http://full-url-of-namespace.com`<br>Multiple can be provided, separated by spaces. |
+
+
+
 Check also `.bin/tests.sh` for some sample usages.
 
 See [here](https://github.com/CloudTooling/data-anonymizer/blob/develop/multi_anonymizer.py#L442) for supported [faker](https://faker.readthedocs.io/en/stable/providers.html) types.
