@@ -1,6 +1,7 @@
-
-
-- name: Run tests
-id: run-tests
-run: |
-test/.bin/e2e-tests.sh
+.git
+.github
+.pytest_cache
+.vscode
+__pycache__
+test
+  

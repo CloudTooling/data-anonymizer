@@ -14,7 +14,9 @@ Desktop.ini
 
 # Build
 cloudtooling-data-anonymizer-latest_digest.txt
+__pycache__
 # Test results
+test/unit/output/*
 test/e2e/testfiles/*.csv_anonymized
 test/e2e/testfiles/*.json_anonymized
 test/e2e/testfiles/*.xml_anonymized

@@ -29,6 +29,26 @@ docker run -v $(pwd):/input cloudtooling/data-anonymizer -t xml -i \
   "$inputFile:(type=phone_number,xpath=//FaxNr)"
 ```
 
+```bash
+# Anonymize email column in CSV
+... -i data.csv:(type=email,column=2)
+
+# Anonymize multiple columns
+...  -i data.csv:(type=first_name,column=0) data.csv:(type=last_name,column=1)
+
+# With wildcards
+... -i data*.csv:(type=email,column=2)
+
+# Overwrite original file
+...  -i data.csv:(type=email,column=2) -o
+
+# Custom delimiter (comma)
+...  -i data.csv:(type=email,column=2) -d ','
+
+# Different locale
+...  -i data.csv:(type=name,column=0) -l en_US
+```
+
 ## CLI Arguments
 
 | **Short** | **Long** | **Destination** | **Default** | **Action** | **Description** |
@@ -44,7 +64,28 @@ docker run -v $(pwd):/input cloudtooling/data-anonymizer -t xml -i \
 | — | `--namespace` | `namespace` | — | — | Define XML namespaces.<br>**Syntax:** `shortname=http://full-url-of-namespace.com`<br>Multiple can be provided, separated by spaces. |
 
 
-
 Check also `.bin/tests.sh` for some sample usages.
 
 See [here](https://github.com/CloudTooling/data-anonymizer/blob/develop/multi_anonymizer.py#L442) for supported [faker](https://faker.readthedocs.io/en/stable/providers.html) types.
+
+## Extending
+
+### As Python Module
+
+```python
+from faker import Factory
+from jinja2 import Environment
+from selector import Selector
+from csv_anonymizer import anonymize_csv
+from anonymizer import unidecode_filter
+
+faker = Factory.create('de_DE')
+template_env = Environment()
+template_env.filters['unidecode'] = unidecode_filter
+
+selector = Selector("(type=email,column=2)")
+anonymize_csv(
+    'input.csv', 'output.csv', [selector],
+    0, 'utf-8', ';', faker, template_env
+)
+```

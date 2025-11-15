@@ -27,6 +27,12 @@ jobs:
         id: install-deps
         run: |
           pip3 install -r requirements.txt
+          pip3 install -r test/requirements.txt
+
+      - name: Run Unit tests
+        id: run-unit-tests
+        run: |
+          test/.bin/unit-tests.sh
 
       - name: Run End2End tests
         id: run-end2end-tests
@@ -66,7 +72,7 @@ jobs:
       - name: Run tests in container
         id: run-tests
         run: |
-          docker run -v $(pwd):/build --entrypoint "/build/.bin/tests.sh" cloudtooling/data-anonymizer:${{github.run_id }}
+          docker run -v $(pwd):/build --entrypoint "/app/test/.bin/e2e-tests.sh" cloudtooling/data-anonymizer:${{github.run_id }}
 
       - name: Log in to GitHub container registry
         uses: docker/login-action@v3

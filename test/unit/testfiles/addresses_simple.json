@@ -1,0 +1,62 @@
+{
+    "addressbook": {
+        "person": [
+            {
+                "lastname": "Riegler",
+                "firstname": "Valentin",
+                "address": [
+                    {
+                        "id": "123",
+                        "street": "Martinshügel 123",
+                        "zip": "4020",
+                        "city": "Linz",
+                        "country": {
+                            "code": "AT",
+                            "name": "Austria"
+                        }
+                    },
+                    {
+                        "id": "124",
+                        "street": "Wherever 19",
+                        "zip": "12345",
+                        "city": "München",
+                        "country": {
+                            "code": "DE",
+                            "name": "Deutschland"
+                        }
+                    }
+                ]
+            },
+            {
+                "lastname": "Auer",
+                "firstname": "Gabriel",
+                "address": [
+                    {
+                        "id": "125",
+                        "street": "Wienerstrasse 80",
+                        "zip": "12345",
+                        "city": "München",
+                        "country": {
+                            "code": "DE",
+                            "name": "Deutschland"
+                        }
+                    },
+                    {
+                        "id": "126",
+                        "street": "Radetzkystrasse 5",
+                        "zip": "4840",
+                        "city": "Vöcklabruck",
+                        "country": {
+                            "code": "AT",
+                            "name": "Austria"
+                        }
+                    }
+                ]
+            },
+            {
+                "lastname": "Grossbank GmbH",
+                "firstname": null
+            }
+        ]
+    }
+}
