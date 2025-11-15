@@ -3,6 +3,8 @@ FROM python:3.14
 ARG BUILD_DATE
 ARG APP_VERSION
 
+WORKDIR /app
+
 LABEL org.opencontainers.image.authors='Martin Reinhardt (martin@m13t.de)' \
     org.opencontainers.image.created=$BUILD_DATE \
     org.opencontainers.image.version=$APP_VERSION \
