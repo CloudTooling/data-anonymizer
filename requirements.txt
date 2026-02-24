@@ -10,6 +10,6 @@ urllib3==2.6.3
 yarg==0.1.10
 jinja2==3.1.6
 # optional (depending on your usecase):
-SQLAlchemy==2.0.46
+SQLAlchemy==2.0.47
 lxml==6.0.2
 jsonpath-ng==1.8.0
